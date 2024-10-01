@@ -39,6 +39,16 @@ class QueueFrontier(StackFrontier):
             self.frontier = self.frontier[1:]  # Fix: Properly remove the first element (queue behavior)
             return node
 
+class RandomFrontier(StackFrontier):
+    def remove(self):
+        if self.empty():
+            raise Exception("Empty Frontier")
+        else:
+            import random
+            index = random.randint(0, len(self.frontier) - 1)
+            node = self.frontier[index]
+            self.frontier = self.frontier[:index] + self.frontier[index + 1:]
+            return node
 
 class Maze:
     def __init__(self, filename):
@@ -118,7 +128,7 @@ class Maze:
 
         # Initialize frontier
         start = Node(state=self.start, parent=None, action=None)
-        frontier = StackFrontier()
+        frontier = RandomFrontier()
         frontier.add(start)
 
         # Initialize an empty set of explored states
